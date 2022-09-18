@@ -27,4 +27,16 @@ public class OhmConfigProperties {
 
     @Value("${orchout.base.path:http://10.0.0.20:8087/api/v1}")
     private String orchoutBasePath;
+
+    @Value("${influx.database.url:http://default.example}")
+    private String influxDatabaseUrl;
+
+    @Value("${influx.database.name:ohm}")
+    private String influxDatabaseName;
+
+    @Value("${influx.database.user:default}")
+    private String influxDatabaseUser;
+
+    @Value("${influx.database.password:default}")
+    private String influxDatabasePassword;
 }

@@ -9,7 +9,8 @@
                 <xs:element name="locationPlaceId" type="xs:long"/>
                 <xs:element name="town" type="xs:string"/>
                 <xs:element name="time" type="xs:long"/>
-                <xs:element name="stationMessage" type="xs:string"/>
+                <xs:element name="stationId" type="xs:long"/>
+                <xs:element name="humidity" type="xs:float"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

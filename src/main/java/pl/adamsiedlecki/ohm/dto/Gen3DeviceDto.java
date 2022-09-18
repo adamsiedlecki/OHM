@@ -1,4 +1,4 @@
-package pl.adamsiedlecki.ohm.gateway.pojo.devices;
+package pl.adamsiedlecki.ohm.dto;
 
 import lombok.*;
 

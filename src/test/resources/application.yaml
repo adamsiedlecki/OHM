@@ -1,0 +1,33 @@
+gen3-devices:
+  devices:
+    - id: 20
+      name: "s2g3 balkon"
+      longitude: 20
+      latitude: 51
+      location-place-id: 1
+      hasBattery: false
+      canBeInDanger: false
+      isExternal: false
+
+    - id: 21
+      name: "s2g3 tests external private"
+      longitude: 20
+      latitude: 51
+      location-place-id: 1
+      hasBattery: true
+      canBeInDanger: true
+      external: true
+      private: true
+
+location-places:
+  places:
+    - id: 1
+      name: "Gospodarstwo - Siedlecki"
+      town: "Czachów"
+
+subscribers:
+  people:
+    - id: 1
+      email: "testmail@gmail.com"
+      phone: "111111111"
+      location-place-id: 1

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Value
 public class HumidityDto {
-    long locationPlaceDto;
+    String locationPlace;
     String town;
     LocalDateTime time;
     long stationId;

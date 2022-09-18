@@ -1,4 +1,4 @@
-package pl.adamsiedlecki.ohm.gateway.pojo.locations;
+package pl.adamsiedlecki.ohm.config.locations;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
+import pl.adamsiedlecki.ohm.dto.LocationPlaceDto;
 
 import java.util.List;
 import java.util.Optional;
