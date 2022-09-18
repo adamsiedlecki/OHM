@@ -27,7 +27,7 @@ class HumidityEndpointTest  {
     private HumidityEndpoint sut;
 
     @Test
-    void shouldImportHumidity() {
+    void shouldImportHumidity() throws InterruptedException {
         // given
         var humidity = 60f;
         var town = "Czachów";
@@ -42,6 +42,7 @@ class HumidityEndpointTest  {
         var result = sut.importHumidity(request);
 
         //then
+        Thread.sleep(300); // make sure that batch is saved
         Assertions.assertEquals(ResponseCode.SUCCESS, result.getResult().getCode());
 
         List<HumidityDto> humidityDtoList = humidityService.getHumidityMeasurementsFromLastXHours(1);

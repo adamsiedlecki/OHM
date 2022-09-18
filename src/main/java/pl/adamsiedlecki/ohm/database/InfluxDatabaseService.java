@@ -31,7 +31,6 @@ public class InfluxDatabaseService {
     public void save(Point point) {
         if (isConnectable()) {
             influxDB.write(point);
-            influxDB.flush();
         } else {
             initConnection();
             if (isConnectable()) {
