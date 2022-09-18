@@ -69,6 +69,6 @@ public class HumidityEndpoint {
         }
         var locationPlaceName = request.getLocationPlaceId() + " " + locationPlace.get().getName();
         var time = LocalDateTime.ofEpochSecond(request.getTime(), 0, TimeUtil.getOffset());
-        return new HumidityDto(locationPlaceName, request.getTown(), time, request.getStationId(), device.get().getName(), BigDecimal.valueOf(request.getHumidity()));
+        return new HumidityDto(locationPlaceName, request.getTown(), time, request.getStationId(), device.get().getName(), request.getHumidity());
     }
 }

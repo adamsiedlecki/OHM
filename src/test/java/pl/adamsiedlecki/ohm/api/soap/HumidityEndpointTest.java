@@ -29,10 +29,12 @@ class HumidityEndpointTest  {
     @Test
     void shouldImportHumidity() {
         // given
+        var humidity = 60f;
+        var town = "Czachów";
         var request = new ImportHumidityRequest();
         request.setTime(OffsetDateTime.now().toEpochSecond());
-        request.setHumidity(60);
-        request.setTown("Czachów");
+        request.setHumidity(humidity);
+        request.setTown(town);
         request.setStationId(20);
         request.setLocationPlaceId(1);
 
@@ -44,7 +46,8 @@ class HumidityEndpointTest  {
 
         List<HumidityDto> humidityDtoList = humidityService.getHumidityMeasurementsFromLastXHours(1);
         Assertions.assertEquals(1, humidityDtoList.size());
-        Assertions.assertEquals(BigDecimal.valueOf(60), humidityDtoList.get(0).getHumidity());
+        Assertions.assertEquals(humidity, humidityDtoList.get(0).getHumidity());
+        Assertions.assertEquals(town, humidityDtoList.get(0).getTown());
 
     }
 }

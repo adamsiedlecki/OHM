@@ -4,9 +4,7 @@ import lombok.Getter;
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 
-import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Measurement(name = "humidity")
 @Getter
@@ -23,5 +21,5 @@ public class HumidityPoint {
     @Column(name = "stationName")
     private String stationName;
     @Column(name = "humidity")
-    private BigDecimal humidity;
+    private double humidity;
 }
