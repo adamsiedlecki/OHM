@@ -41,8 +41,6 @@ public class BaseTestContainersSpringTest {
         var properties = new OhmConfigProperties();
         properties.setInfluxDatabaseName(DATABASE);
         properties.setInfluxDatabaseUrl("http:10.0.0.20:18086"); // influxDBContainer.getUrl()
-        properties.setInfluxDatabaseUser(USER);
-        properties.setInfluxDatabasePassword(PASSWORD);
         properties.setInfluxDatabaseAdminToken("token");
 
         return new InfluxDatabaseService(properties);

@@ -34,12 +34,6 @@ public class OhmConfigProperties {
     @Value("${influx.database.name:ohm}")
     private String influxDatabaseName;
 
-    @Value("${influx.database.user:default}")
-    private String influxDatabaseUser;
-
-    @Value("${influx.database.password:default}")
-    private String influxDatabasePassword;
-
     @Value("${influx.database.admin.token:xxx}")
     private String influxDatabaseAdminToken;
 }
