@@ -9,7 +9,7 @@ public class HumidityDto {
     String locationPlace;
     String town;
     LocalDateTime time;
-    long stationId;
+    String stationId;
     String stationName;
     double humidity;
 }

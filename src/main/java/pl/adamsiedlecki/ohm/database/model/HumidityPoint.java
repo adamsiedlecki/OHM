@@ -1,25 +1,31 @@
 package pl.adamsiedlecki.ohm.database.model;
 
+import com.influxdb.annotations.Column;
+import com.influxdb.annotations.Measurement;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import org.influxdb.annotation.Column;
-import org.influxdb.annotation.Measurement;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
 @Measurement(name = "humidity")
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class HumidityPoint {
 
-    @Column(name = "locationPlace")
+    @Column(name = "locationPlace", tag = true)
     private String locationPlace;
-    @Column(name = "town")
+    @Column(name = "town", tag = true)
     private String town;
-    @Column(name = "time")
+    @Column(name = "time", timestamp = true)
     private Instant time;
-    @Column(name = "stationId")
-    private long stationId;
-    @Column(name = "stationName")
+    @Column(name = "stationId", tag = true)
+    private String stationId;
+    @Column(name = "stationName", tag = true)
     private String stationName;
-    @Column(name = "humidity")
-    private double humidity;
+    @Column(name = "value")
+    private double humidityValue;
 }

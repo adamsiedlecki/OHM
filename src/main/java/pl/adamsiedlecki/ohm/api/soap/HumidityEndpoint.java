@@ -1,6 +1,5 @@
 package pl.adamsiedlecki.ohm.api.soap;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -20,11 +19,7 @@ import pl.adamsiedlecki.ohm.soap.ResponseCode;
 import pl.adamsiedlecki.ohm.soap.Result;
 import pl.adamsiedlecki.ohm.utils.TimeUtil;
 
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 
 @Endpoint
 @Slf4j
@@ -45,7 +40,7 @@ public class HumidityEndpoint {
         try {
             humidityService.saveHumidity(convert(request));
         } catch (RuntimeException e) {
-            log.error("Error while saving humidity: {}", e.getMessage());
+            log.error("Error while saving humidity: ", e);
             result.setCode(ResponseCode.ERROR);
             result.setDescription(e.getMessage());
         }
@@ -69,6 +64,6 @@ public class HumidityEndpoint {
         }
         var locationPlaceName = request.getLocationPlaceId() + " " + locationPlace.get().getName();
         var time = LocalDateTime.ofEpochSecond(request.getTime(), 0, TimeUtil.getOffset());
-        return new HumidityDto(locationPlaceName, request.getTown(), time, request.getStationId(), device.get().getName(), request.getHumidity());
+        return new HumidityDto(locationPlaceName, request.getTown(), time, ""+request.getStationId(), device.get().getName(), request.getHumidity());
     }
 }

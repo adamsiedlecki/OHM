@@ -1,64 +1,57 @@
 package pl.adamsiedlecki.ohm.database;
 
+import com.influxdb.client.InfluxDBClient;
+import com.influxdb.client.InfluxDBClientFactory;
+import com.influxdb.client.QueryApi;
+import com.influxdb.client.WriteApiBlocking;
+import com.influxdb.client.domain.WritePrecision;
 import lombok.extern.slf4j.Slf4j;
-import org.influxdb.InfluxDB;
-import org.influxdb.InfluxDBFactory;
-import org.influxdb.dto.Point;
-import org.influxdb.dto.Query;
-import org.influxdb.dto.QueryResult;
 import org.springframework.stereotype.Service;
 import pl.adamsiedlecki.ohm.config.OhmConfigProperties;
+import pl.adamsiedlecki.ohm.database.model.HumidityPoint;
+import pl.adamsiedlecki.ohm.dto.HumidityDto;
+import pl.adamsiedlecki.ohm.utils.TimeUtil;
 
-import java.util.concurrent.TimeUnit;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class InfluxDatabaseService {
 
-    private InfluxDB influxDB;
-
     private final OhmConfigProperties ohmConfigProperties;
 
     public InfluxDatabaseService(OhmConfigProperties ohmConfigProperties) {
         this.ohmConfigProperties = ohmConfigProperties;
-        initConnection();
     }
 
-    public QueryResult query(String query) {
-        return influxDB.query(new Query(query, ohmConfigProperties.getInfluxDatabaseName()));
-    }
-
-    public void save(Point point) {
-        if (isConnectable()) {
-            influxDB.write(point);
-        } else {
-            initConnection();
-            if (isConnectable()) {
-                influxDB.write(point);
-            }
+    public List<HumidityDto> getFromLastHours(long hours) {
+        String flux = String.format("from(bucket:\"%s\") |> range(start:-%dh) |> filter(fn: (r) => r[\"_measurement\"] == \"humidity\")", "ohm-bucket", hours);
+        log.info("Constructed flux query: {}", flux);
+        try (var influxClient = buildConnection()) {
+            QueryApi queryApi = influxClient.getQueryApi();
+            var pointList = queryApi.query(flux, HumidityPoint.class);
+            return pointList.stream().map(this::convert).collect(Collectors.toList());
         }
     }
 
-    private void initConnection() {
-        try {
-            influxDB = InfluxDBFactory.connect(ohmConfigProperties.getInfluxDatabaseUrl(),
-                    ohmConfigProperties.getInfluxDatabaseUser(),
-                    ohmConfigProperties.getInfluxDatabasePassword());
-            influxDB.setDatabase(ohmConfigProperties.getInfluxDatabaseName());
-            influxDB.enableBatch(100, 200, TimeUnit.MILLISECONDS);
-            influxDB.createRetentionPolicy("defaultPolicy", "ohm", "forever", 1, true);
-            influxDB.setRetentionPolicy("defaultPolicy");
-        } catch (RuntimeException e) {
-            log.error("Error while creating influxDB connection: {}", e.getMessage());
+    public InfluxDBClient buildConnection() {
+        return InfluxDBClientFactory.create(ohmConfigProperties.getInfluxDatabaseUrl(),
+                ohmConfigProperties.getInfluxDatabaseAdminToken().toCharArray(),
+                "ohm-org",
+                "ohm-bucket");
+    }
+
+    public void save(HumidityPoint point) {
+        try (var influxClient = buildConnection()){
+            WriteApiBlocking writeApi = influxClient.getWriteApiBlocking();
+            writeApi.writeMeasurements(WritePrecision.MS, List.of(point));
         }
     }
 
-    private boolean isConnectable() {
-        var pong = influxDB.ping();
-        if (pong.getVersion().equalsIgnoreCase("unknown")) {
-            log.error("Cannot connect to InfluxDb");
-            return false;
-        }
-        return true;
+    private HumidityDto convert(HumidityPoint point) {
+        var time = LocalDateTime.ofInstant(point.getTime(), TimeUtil.getOffset());
+        return new HumidityDto(point.getLocationPlace(), point.getTown(), time, point.getStationId(), point.getStationName(), point.getHumidityValue());
     }
 }
