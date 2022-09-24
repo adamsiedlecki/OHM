@@ -1,3 +1,3 @@
 ## OHM - *Orchard Humidity Monitor*
 
-http://localhost:8889/ws/humidity.wsdl
+Wsdl can be seen at: http://localhost:8889/ws/humidity.wsdl
