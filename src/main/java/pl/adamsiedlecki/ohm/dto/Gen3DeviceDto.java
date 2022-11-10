@@ -2,6 +2,8 @@ package pl.adamsiedlecki.ohm.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -17,4 +19,5 @@ public class Gen3DeviceDto {
     private boolean canBeInDanger;
     private boolean external;
     private boolean isPrivate;
+    private List<String> tags;
 }

@@ -19,7 +19,9 @@ public class Gen3DevicesInfo {
     private List<Gen3DeviceDto> devices = new ArrayList<>();
 
     public List<Gen3DeviceDto> getDevices() {
-        return devices;
+        return devices.stream()
+                .filter(device -> device.getTags().stream().anyMatch(tag -> tag.equals("humidity")))
+                .toList();
     }
 
     public void setDevices(List<Gen3DeviceDto> devices) {

@@ -28,11 +28,10 @@ public class HumiditySchedule {
     /**
      * Checks humidity at every station every hour
      */
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 1 * * * *")
     public void checkHumidityHourly() {
         var localDevices= gen3DevicesInfo.getDevices().stream().filter(device -> !device.isExternal()).toList();
         for (Gen3DeviceDto device: localDevices) {
-
             try {
                 BigDecimal humidity = stationGen3Service.sendHumidityRequest(device.getId());
                 var humidityDto = prepare(humidity, device);
